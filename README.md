@@ -26,5 +26,5 @@ $ poetry run streamlit run home.py
 
 ## Local environment
 
-Copy and paste the URL that appears in the log after executing “make up” into your browser.
+Copy and paste the URL that appears in the log after executing “poetry run streamlit run home.py” into your browser.
 - http://localhost:8501
