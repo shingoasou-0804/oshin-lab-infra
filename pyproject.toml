@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "oshin-lab-infra"
+version = "0.1.0"
+description = ""
+authors = ["shingoasou-0804 <122670383+shingoasou-0804@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+streamlit = "^1.41.1"
+
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+black = "^24.10.0"
+flake8 = "^7.1.1"
+pip-audit = "^2.7.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
