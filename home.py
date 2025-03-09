@@ -5,8 +5,8 @@ import firebase
 
 def login():
     email = st.empty()
-    email = email.text_input("Input your email")
-    password = st.text_input("Input your password", type="password")
+    email = email.text_input("Email")
+    password = st.text_input("Password", type="password")
     submit = st.button("Login")
     if submit and firebase.authenticate_user(email, password):
         st.rerun()

@@ -11,6 +11,9 @@ streamlit = "^1.41.1"
 pyrebase4 = "^4.8.0"
 python-dotenv = "^1.0.1"
 setuptools = "^75.8.0"
+google-cloud-bigquery = {extras = ["bqstorage", "pandas"], version = "^3.30.0"}
+pandas = "^2.2.3"
+db-dtypes = "^1.4.1"
 
 
 [tool.poetry.group.dev.dependencies]
