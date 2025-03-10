@@ -15,6 +15,7 @@ google-cloud-bigquery = {extras = ["bqstorage", "pandas"], version = "^3.30.0"}
 pandas = "^2.2.3"
 db-dtypes = "^1.4.1"
 langchain = "^0.3.20"
+langchain-openai = "^0.3.8"
 
 
 [tool.poetry.group.dev.dependencies]

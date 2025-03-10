@@ -1,4 +1,8 @@
 import streamlit as st
+from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 st.title("Multimodal RAG ChatBot")
 uploaded_file = st.file_uploader(
@@ -8,4 +12,7 @@ if uploaded_file is not None:
 
 user_input = st.text_input("Enter a prompt")
 if st.button("Send"):
+    llm = ChatOpenAI()
+    response = llm.invoke(user_input)
+    st.write(f"bot: {response.content}")
     st.write(f"human: {user_input}")
