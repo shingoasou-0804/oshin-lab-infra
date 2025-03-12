@@ -1,6 +1,11 @@
 import streamlit as st
-from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
+from langchain_core.messages import HumanMessage
+from langchain_openai import ChatOpenAI
+
+if "history" not in st.session_state:
+    st.session_state.history = []
+    st.session_state.llm = ChatOpenAI()
 
 load_dotenv()
 
@@ -12,7 +17,9 @@ if uploaded_file is not None:
 
 user_input = st.text_input("Enter a prompt")
 if st.button("Send"):
-    llm = ChatOpenAI()
-    response = llm.invoke(user_input)
-    st.write(f"bot: {response.content}")
-    st.write(f"human: {user_input}")
+    st.session_state.history.append(HumanMessage(user_input))
+    response = st.session_state.llm.invoke(st.session_state.history)
+    st.session_state.history.append(response)
+
+    for message in reversed(st.session_state.history):
+        st.write(f"{message.type}: {message.content}")
