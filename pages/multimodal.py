@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_chroma import Chroma
+from langchain_openai import OpenAIEmbeddings
+from operator import itemgetter
 from traceloop.sdk import Traceloop
 from traceloop.sdk.decorators import workflow
 
@@ -17,7 +20,18 @@ Traceloop.init(
 )
 
 
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+
 def create_chain():
+    vectorstore = Chroma(
+        embedding_function=OpenAIEmbeddings(
+            model="text-embedding-3-small"
+        ),
+        persist_directory="data"
+    )
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
     prompt = ChatPromptTemplate.from_messages(
         [
             (
@@ -28,7 +42,15 @@ def create_chain():
             ("human", "{input}"),
         ]
     )
-    return prompt | ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    return (
+        {
+            "input": itemgetter("input"),
+            "info": itemgetter("input") | retriever | format_docs,
+            "history": itemgetter("history"),
+        }
+        | prompt
+        | ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    )
 
 
 if "history" not in st.session_state:
