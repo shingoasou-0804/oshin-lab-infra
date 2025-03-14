@@ -1,8 +1,13 @@
 import sys
+
+from dotenv import load_dotenv
 from langchain_community.document_loaders import CSVLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
+
+
+load_dotenv()
 
 
 def load_document(filename):
@@ -18,4 +23,4 @@ def load_document(filename):
     )
 
 
-load_document(sys.arg[1])
+load_document(sys.argv[1])
