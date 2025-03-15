@@ -1,22 +1,18 @@
 import base64
-import streamlit as st
-
-from config import TRACELOOP_API_KEY
-from langchain_core.messages import HumanMessage
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_chroma import Chroma
-from langchain_openai import OpenAIEmbeddings
 from operator import itemgetter
+
+import streamlit as st
+from langchain_chroma import Chroma
+from langchain_core.messages import HumanMessage
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from traceloop.sdk import Traceloop
 from traceloop.sdk.decorators import workflow
 
+from config import TRACELOOP_API_KEY
 
-Traceloop.init(
-    disable_batch=True,
-    api_key=TRACELOOP_API_KEY
-)
+Traceloop.init(disable_batch=True, api_key=TRACELOOP_API_KEY)
 
 
 @workflow(name="get-image-description")
@@ -99,8 +95,7 @@ def history_append(user_input, response):
 
 
 st.title("Multimodal RAG ChatBot")
-uploaded_file = st.file_uploader(
-    "Upload an image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 if uploaded_file is not None:
     st.image(uploaded_file, caption="Uploaded Image", width=700)
 
