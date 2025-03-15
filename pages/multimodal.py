@@ -2,7 +2,6 @@ import base64
 import streamlit as st
 
 from config import TRACELOOP_API_KEY
-from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -13,8 +12,6 @@ from langchain_core.output_parsers import StrOutputParser
 from traceloop.sdk import Traceloop
 from traceloop.sdk.decorators import workflow
 
-
-load_dotenv()
 
 Traceloop.init(
     disable_batch=True,

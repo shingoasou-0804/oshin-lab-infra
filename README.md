@@ -22,6 +22,9 @@ $ ./test.sh
 
 # Boost
 $ poetry run streamlit run home.py
+
+# Create index
+$ poetry run python make_index.py hoge_rag.csv
 ```
 
 ## Local environment
