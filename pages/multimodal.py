@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 
 from config import TRACELOOP_API_KEY
@@ -8,6 +9,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 from operator import itemgetter
+from langchain_core.output_parsers import StrOutputParser
 from traceloop.sdk import Traceloop
 from traceloop.sdk.decorators import workflow
 
@@ -20,31 +22,66 @@ Traceloop.init(
 )
 
 
+@workflow(name="get-image-description")
+def get_image_description(image_data: str):
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "human",
+                [
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/jpeg;base64,{image_data}"},
+                    }
+                ],
+            ),
+        ]
+    )
+    chain = prompt | ChatOpenAI(model="gpt-4o-mini") | StrOutputParser()
+    return chain.invoke({"image_data": image_data})
+
+
+def create_message(dic: dict):
+    image_data = dic["image"]
+    if image_data:
+        return [
+            (
+                "human",
+                [
+                    {"type": "text", "text": dic["input"]},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/jpeg;base64,{image_data}"},
+                    },
+                ],
+            )
+        ]
+    return [("human", dic["input"])]
+
+
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 
 def create_chain():
     vectorstore = Chroma(
-        embedding_function=OpenAIEmbeddings(
-            model="text-embedding-3-small"
-        ),
-        persist_directory="data"
+        embedding_function=OpenAIEmbeddings(model="text-embedding-3-small"),
+        persist_directory="data",
     )
     retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
     prompt = ChatPromptTemplate.from_messages(
         [
             (
                 "system",
-                "回答には以下の情報も参考にしてください。参考情報: \n{info}",
+                "回答には以下の情報も参考にしてください。参考情報：\n{info}",
             ),
             ("placeholder", "{history}"),
-            ("human", "{input}"),
+            ("placeholder", "{message}"),
         ]
     )
     return (
         {
-            "input": itemgetter("input"),
+            "message": create_message,
             "info": itemgetter("input") | retriever | format_docs,
             "history": itemgetter("history"),
         }
@@ -72,11 +109,16 @@ if uploaded_file is not None:
 
 user_input = st.text_input("Enter a prompt")
 if st.button("Send"):
+    image_data = None
+    image_description = ""
+    if uploaded_file is not None:
+        image_data = base64.b64encode(uploaded_file.read()).decode("utf-8")
+        image_description = get_image_description(image_data)
     response = st.session_state.chain.invoke(
         {
-            "input": user_input,
+            "input": user_input + image_description,
             "history": st.session_state.history,
-            "info": "ユーザーの年齢は10歳です。"
+            "image": image_data,
         }
     )
     history_append(user_input, response)
