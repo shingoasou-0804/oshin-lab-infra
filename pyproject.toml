@@ -14,6 +14,12 @@ setuptools = "^75.8.0"
 google-cloud-bigquery = {extras = ["bqstorage", "pandas"], version = "^3.30.0"}
 pandas = "^2.2.3"
 db-dtypes = "^1.4.1"
+langchain = "^0.3.20"
+langchain-openai = "^0.3.8"
+traceloop-sdk = "^0.38.12"
+langchain-community = "^0.3.19"
+langchain-chroma = "^0.2.2"
+chromadb = "^0.6.3"
 
 
 [tool.poetry.group.dev.dependencies]

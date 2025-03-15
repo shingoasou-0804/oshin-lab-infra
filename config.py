@@ -22,6 +22,8 @@ CLIENT_X509_CERT_URL = os.getenv("CLIENT_X509_CERT_URL")
 BIGQUERY_DATASET_ID = os.getenv("BIGQUERY_DATASET_ID")
 BIGQUERY_TABLE_ID = os.getenv("BIGQUERY_TABLE_ID")
 
+TRACELOOP_API_KEY = os.getenv("TRACELOOP_API_KEY")
+
 firebase = {
     "apiKey": FIREBASE_API_KEY,
     "authDomain": FIREBASE_AUTH_DOMAIN,
@@ -45,5 +47,5 @@ credentials_dict = {
     "token_uri": "https://oauth2.googleapis.com/token",
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
     "client_x509_cert_url": CLIENT_X509_CERT_URL,
-    "universe_domain": "googleapis.com"
+    "universe_domain": "googleapis.com",
 }
