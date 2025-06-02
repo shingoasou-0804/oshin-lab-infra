@@ -1,7 +1,7 @@
 import operator
-import streamlit as st
-
 from typing import Annotated, Any, Optional
+
+import streamlit as st
 from dotenv import load_dotenv
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
@@ -89,8 +89,7 @@ class InterviewConductor:
         questions = self._generate_questions(
             user_request=user_request, personas=personas
         )
-        answers = self._generate_answers(
-            personas=personas, questions=questions)
+        answers = self._generate_answers(personas=personas, questions=questions)
         interviews = self._create_interviews(
             personas=personas, questions=questions, answers=answers
         )
@@ -171,7 +170,8 @@ class InformationEvaluator:
                 ),
                 (
                     "human",
-                    "以下のユーザーリクエストとインタビュー結果に基づいて、包括的な要件文書を作成するのに十分な情報が集まったかどうかを判断してください。\n\n"
+                    "以下のユーザーリクエストとインタビュー結果に基づいて、\
+                    包括的な要件文書を作成するのに十分な情報が集まったかどうかを判断してください。\n\n"
                     "ユーザーリクエスト: {user_request}\n\n"
                     "インタビュー結果:\n{interview_results}",
                 ),
@@ -297,7 +297,9 @@ class DocumentationAgent:
 
 
 def main():
-    prompt = st.chat_input("要件文書を生成するためのユーザーリクエストを入力してください。")
+    prompt = st.chat_input(
+        "要件文書を生成するためのユーザーリクエストを入力してください。"
+    )
     if prompt:
         st.chat_message("user").write(prompt)
         llm = ChatOpenAI(model="gpt-4o", temperature=0.0)
