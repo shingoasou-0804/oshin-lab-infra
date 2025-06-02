@@ -18,10 +18,7 @@ ENV PATH="${POETRY_HOME}/bin:${PATH}"
 RUN python -c 'from urllib.request import urlopen; print(urlopen("https://install.python-poetry.org").read().decode())' | python - \
     && poetry config virtualenvs.create false
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-COPY --from=builder /usr/local/bin/streamlit /usr/local/bin/
-COPY --from=builder /usr/local/bin/isort /usr/local/bin/
-COPY --from=builder /usr/local/bin/black /usr/local/bin/
-COPY --from=builder /usr/local/bin/flake8 /usr/local/bin/
+COPY --from=builder /usr/local/bin/streamlit /usr/local/bin/ /usr/local/bin/isort /usr/local/bin/black /usr/local/bin/flake8 /usr/local/bin/pip-audit /usr/local/bin/
 WORKDIR /app
 COPY . /app/
 RUN chmod +x /app/test.sh
