@@ -20,5 +20,5 @@ jobs:
         shell: bash
       
       - name: Run script
-        run: ./test.sh
+        run: docker exec oshin-lab-app ./test.sh
         
