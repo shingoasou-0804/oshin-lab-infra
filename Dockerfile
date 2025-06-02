@@ -17,4 +17,5 @@ COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/pytho
 COPY --from=builder /usr/local/bin/streamlit /usr/local/bin/
 WORKDIR /app
 COPY . /app/
-CMD ["streamlit", "run", "home.py", "--server.port", "8080"]
+RUN chmod +x /app/test.sh
+CMD ["streamlit", "run", "home.py", "--server.port", "8501"]

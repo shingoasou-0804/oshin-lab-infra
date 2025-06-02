@@ -1,0 +1,24 @@
+name: Script test
+run-name: Script test
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  script-test:
+    name: Script test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Build and run docker container
+        run: |
+          docker build -t oshin-lab-app .
+          docker run -d --name oshin-lab-app oshin-lab-app
+        shell: bash
+      
+      - name: Run script
+        run: ./test.sh
+        
