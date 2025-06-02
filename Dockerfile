@@ -12,7 +12,11 @@ RUN poetry install --no-interaction --without dev --no-ansi --no-root -vvv
 
 FROM python:3.12-slim
 ENV PYTHONUNBUFFERED=1 \
-    PYTHONIOENCODING="UTF-8"
+    PYTHONIOENCODING="UTF-8" \
+    POETRY_HOME="/opt/poetry"
+ENV PATH="${POETRY_HOME}/bin:${PATH}"
+RUN python -c 'from urllib.request import urlopen; print(urlopen("https://install.python-poetry.org").read().decode())' | python - \
+    && poetry config virtualenvs.create false
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=builder /usr/local/bin/streamlit /usr/local/bin/
 WORKDIR /app
