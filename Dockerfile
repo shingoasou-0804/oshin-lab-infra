@@ -20,6 +20,7 @@ RUN python -c 'from urllib.request import urlopen; print(urlopen("https://instal
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=builder /usr/local/bin/streamlit /usr/local/bin/
 COPY --from=builder /usr/local/bin/isort /usr/local/bin/
+COPY --from=builder /usr/local/bin/black /usr/local/bin/
 WORKDIR /app
 COPY . /app/
 RUN chmod +x /app/test.sh
