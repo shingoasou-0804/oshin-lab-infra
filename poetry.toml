@@ -1,2 +1,5 @@
 [virtualenvs]
 in-project = true
+
+[tool.isort]
+profile = "black"
