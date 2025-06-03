@@ -37,6 +37,7 @@ jobs:
         with:
           push: false
           load: true
+          files: docker-bake.hcl
           set: |
             *.platform=linux/amd64
             app.cache-from=type=local,src=/tmp/.buildx-cache/oshin-lab-infra
